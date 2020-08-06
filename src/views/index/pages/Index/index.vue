@@ -22,8 +22,8 @@
                 <van-grid-item v-for="(item, idx) in (category.list.length>4?category.list.slice(0, 4):category.list)" :key="idx" @click.stop="onLinkToDetail(item)">
                     <!-- <template slot="icon">
                         <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
-                    </template> 
-                    <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/> 
+                    </template>
+                    <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
                     -->
 
                     <template slot="default">
@@ -169,7 +169,7 @@ export default {
     //   const _id = tool.addId(item.companyCode, wxUrl, this.userId);
       window.location.href =
         commodityType === 3
-          ? wxUrl 
+          ? wxUrl
           : `${ROUTER_BASE}/product/detail?productCode=${productCode}&productId=${id}&userId=${
               this.userId
             }`;
@@ -421,5 +421,11 @@ export default {
 }
 .van-notice-bar{
     margin-bottom:10px;
+}
+.van-notice-bar__content{
+  padding-top:1px;
+  height:40px;
+  line-height: 40px;
+  overflow: hidden;
 }
 </style>
