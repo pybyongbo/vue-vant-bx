@@ -1,0 +1,44 @@
+{
+  "id": "1381204",
+  "name": "fe-dispark-center",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8162614",
+      "name": "down",
+      "font_class": "down",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "7920634",
+      "name": "add",
+      "font_class": "add",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "10681377",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "10681374",
+      "name": "look",
+      "font_class": "look",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "9656873",
+      "name": "close",
+      "font_class": "close",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    }
+  ]
+}
