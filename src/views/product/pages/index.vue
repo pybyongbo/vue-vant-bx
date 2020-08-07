@@ -12,13 +12,24 @@
             </van-cell>
 
             <van-cell>
-                <!-- 使用 title 插槽来自定义标题 -->
+                <!-- 使用 title 插槽来自定义标题 color="#ffe1e1" text-color="#ad0000" color="#ffe1e1" text-color="#ad0000"-->
                 <template #title>
                     <span class="custom-title">被保人性别</span>
                 </template>
                 <template #default>
-                    <van-tag color="#ffe1e1" text-color="#ad0000" size="large">男</van-tag>
-                    <van-tag color="#dedede" text-color="#ad0000" size="large">女</van-tag>
+                    <van-tag :class="[currentSex === 'M' ? 'active' : '']" size="large" @click="changeSex('M')">男</van-tag>
+                    <van-tag :class="[currentSex === 'F' ? 'active' : '']" size="large" @click="changeSex('F')">女</van-tag>
+                </template>
+            </van-cell>
+
+            <van-cell>
+                <!-- 使用 title 插槽来自定义标题 color="#ffe1e1" text-color="#ad0000" color="#ffe1e1" text-color="#ad0000"-->
+                <template #title>
+                    <span class="custom-title">被保人有无吸烟习惯/吸烟史</span>
+                </template>
+                <template #default>
+                    <van-tag :class="[currentSmoke === 'Y' ? 'active' : '']" size="large" @click="changeSmoke('Y')">有</van-tag>
+                    <van-tag :class="[currentSmoke === 'N' ? 'active' : '']" size="large" @click="changeSmoke('N')">无</van-tag>
                 </template>
             </van-cell>
             <van-cell>
@@ -64,7 +75,8 @@ export default {
       birthday: "请选择",
       detailInfo: {},
       show: false,
-      radioSex:1,
+      currentSex: "M",
+      currentSmoke: "Y",
       productId: productId || "",
       productCode: productCode || "",
       sourceType: sourceType || ""
@@ -105,10 +117,28 @@ export default {
       let formatDate = moment(val).format("YYYY-MM-DD");
       this.birthday = formatDate;
       this.show = false;
+    },
+    // 改变性别
+    changeSex(value) {
+      this.currentSex = value;
+      console.log(this.currentSex);
+      //   this.premium.insurants[0].genderCode = value
+    },
+    changeSmoke(value) {
+      this.currentSmoke = value;
+      console.log(this.currentSmoke);
     }
   }
 };
 </script>
 
 <style scoped>
+.van-tag--large {
+  padding: 5px 18px;
+}
+/* color="#ffe1e1" text-color="#ad0000" */
+.active {
+  background: #ffe1e1;
+  color: #ad0000;
+}
 </style>
