@@ -56,9 +56,11 @@
     <van-cell
       v-for="item in factors"
       :key="item.key"
+      :class="{'fl':(item.readonly === true ||item.readonly === false),'w100':item.type === 'label'}"
+        @click="chooseRefuel(item,item.readonly)"
     >
-        <template #title>
-          <span class="custom-title">{{item.title}}</span>
+        <template #title >
+          <div class="custom-title"  :class="[refuelArr.includes(item.key) ? 'bg-color' : '',item.readonly === true ? 'fly': '']">{{item.title}}</div>
         </template>
         <template #default>
           <van-tag
@@ -67,11 +69,35 @@
              :key="item1.code"
              :title="currentActivity[item.key]"
             size="large"
-             @click.native="changeCurrent(item.key,item1.code) "
+            @click.native="changeCurrent(item.key,item1.code) "
           >{{item1.text}}</van-tag>
         </template>
 
     </van-cell>
+
+    <div class="terms">
+        <p>增值服务</p>
+        <ul class="terms_title">
+          <li>
+            <a target="_blank" href="/mobile/static/found/postoperative-20200518.pdf">术后家庭护理服务介绍</a>
+          </li>
+          <li>
+            <a target="_blank" href="/mobile/static/found/medical-20200518.pdf">医疗垫付服务介绍</a>
+          </li>
+          <li>
+            <a target="_blank" href="/mobile/static/found/swelling-20200518.pdf">肿瘤特药服务介绍</a>
+          </li>
+          <li>
+            <a target="_blank" href="/mobile/static/found/serious-20200518.pdf">重疾绿通服务介绍</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 中间图标 -->
+      <div class="m-product-logo">
+        <div />
+        <p>本保险由众安保险承保并负责理赔</p>
+      </div>
 
 
   </div>
@@ -107,6 +133,7 @@ export default {
       birthday: "请选择",
       detailInfo: {},
       factors: [],
+      refuelArr:[],
       price: 0,
 
       premium: {
@@ -196,6 +223,33 @@ export default {
       console.log(this.currentSmoke);
     },
 
+    // 选择加油包 附加责任（可选）
+    chooseRefuel(item, value) {
+      if (value === false) {
+        let index1 = this.premium.products[0].factors.findIndex(v => {
+          return v.key === item.key
+        })
+        // 点击添加参数
+        if (index1 > -1) {
+          this.premium.products[0].factors.splice(index1, 1)
+          this.getPremiun()
+        } else {
+          this.premium.products[0].factors.push({
+            key: item.key,
+            value: '1'
+          })
+          this.getPremiun()
+        }
+        // 点击高亮
+        let index = this.refuelArr.indexOf(item.key)
+        if (index > -1) {
+          this.refuelArr.splice(index, 1)
+        } else {
+          this.refuelArr.push(item.key)
+        }
+      }
+    },
+
     //计算保费
     async getPremiun() {
       const res = await api.getPremium(this.premium);
@@ -214,6 +268,7 @@ export default {
     },
     // 被保人抽烟  社保
     changeCurrent(key, code) {
+        console.log(123,234)
       // vue中动态添加属性需要使用$set  负责点击高亮
       this.$set(this.currentActivity, key, code)
       // 判断数据是否存在
@@ -238,7 +293,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .van-tag--large {
   padding: 5px 18px;
 
@@ -251,7 +306,105 @@ export default {
   background: #ffe1e1;
   color: #ad0000;
 }
-.van-cell__title span {
+.van-cell__title div,.van-cell__title span {
   font-size: 12px;
 }
+.van-cell{
+    // padding:0 10px;
+}
+.van-cell.fl{
+    display: block;
+    text-align: center;
+    padding:5px 8px;
+}
+.fl {
+    width: 50%;
+    float: left;
+    .van-cell__title {
+      height: 100%;
+      .custom-title {
+        width: 100%;
+        border-radius: 5px;
+        color: #999999;
+         height:40px;
+        line-height: 40px;
+        background-color: #f5f5f5;
+        text-align: center;
+      }
+    }
+  }
+//   .fl{
+  .custom-title.bg-color{
+    background-color: #d3a243!important;
+    color: #fff!important;
+    border-radius: 10px;
+    height:26px;
+    line-height: 26px;
+  }
+//   }
+
+  div.fly {
+    color: #fff !important;
+    background-color: #d3a243 !important;
+    border-radius: 10px;
+    padding:10px 0;
+    height:24px!important;
+    line-height: 24px!important;
+  }
+  .w100 {
+    width: 100%;
+    float: left;
+  }
+  .terms {
+      background-color: #fff;
+      padding-left: 20px;
+      clear: both;
+      p {
+        height: 50px;
+        line-height: 50px;
+        color: #5b5f65;
+      }
+      .terms_title {
+        display: flex;
+        flex-wrap: wrap;
+        li {
+          height: 42px;
+          line-height: 42px;
+          width: 44%;
+          text-align: center;
+          padding-right: 20px;
+          padding-bottom: 12px;
+          a {
+            text-decoration: underline;
+            font-size: 12px;
+            border-radius: 5px;
+            color: #d3a243;
+            height: 100%;
+            display: block;
+            // background-color: #d3a243;
+          }
+        }
+      }
+    }
+
+    .m-product-logo {
+      height: 45px;
+      background-color: #f6f6f6;
+      display: flex;
+      justify-content: center;
+      padding-top: 14px;
+      div {
+        width: 90px;
+        height: 16px;
+        // background: url('~@/assets/image/product/logo03.png') no-repeat center
+        //   center;
+        background-size: contain;
+        margin-right: 3px;
+      }
+      p {
+        color: #999999;
+        font-size: 12px;
+        margin-left: 3px;
+      }
+    }
 </style>
