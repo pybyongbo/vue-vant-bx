@@ -37,42 +37,7 @@
         >女</van-tag>
       </template>
     </van-cell>
-    <!-- 使用 title 插槽来自定义标题 -->
-    <!-- <van-cell>
-                <template #title>
-                    <span class="custom-title">保险期间</span>
-                </template>
-                <template #default>
-                    <van-tag color="#ffe1e1" text-color="#ad0000" size="large">一年</van-tag>
-                </template>
-            </van-cell> -->
-
-    <!-- <van-cell>
-
-                <template #title>
-                    <span class="custom-title">被保人有无吸烟习惯/吸烟史</span>
-                </template>
-                <template #default>
-                    <van-tag :class="[currentSmoke === 'Y' ? 'active' : '']" size="large" @click="changeSmoke('Y')">有</van-tag>
-                    <van-tag :class="[currentSmoke === 'N' ? 'active' : '']" size="large" @click="changeSmoke('N')">无</van-tag>
-                </template>
-            </van-cell>
-
-            <van-cell>
-<<<<<<< HEAD
-
-=======
-
->>>>>>> ca34c497c48ce5ede4e81d87696e2820541408e7
-                <template #title>
-                    <span class="custom-title">被保人有无社保</span>
-                </template>
-                <template #default>
-                    <van-tag :class="[currentSmoke === 'Y' ? 'active' : '']" size="large" @click="changeSmoke('Y')">有</van-tag>
-                    <van-tag :class="[currentSmoke === 'N' ? 'active' : '']" size="large" @click="changeSmoke('N')">无</van-tag>
-                </template>
-            </van-cell> -->
-    <!-- {{JSON.stringify(factors)}} -->
+   
 
     <van-popup
       v-model="show"
@@ -93,18 +58,19 @@
       v-for="item in factors"
       :key="item.key"
     >
-
       <!-- {{JSON.stringify(item)}} -->
         <template #title>
           <span class="custom-title">{{item.title}}</span>
         </template>
         <template #default>
           <van-tag
-            :class="[currentSmoke === 'Y' ? 'active' : '']"
+             :class="[ currentActivity[item.key] === item1.code  ? 'active' : '',item.key === 'insure' ? 'fly': '']"
+             v-for="(item1) in item.list"
+             :key="item1.code"
+             :title="currentActivity[item.key]"
             size="large"
-            @click="changeSmoke('Y')"
-          >有</van-tag>
-          <!-- <van-tag :class="[currentSmoke === 'N' ? 'active' : '']" size="large" @click="changeSmoke('N')">无</van-tag> -->
+             @click.native="changeCurrent(item.key,item1.code) "
+          >{{item1.text}}</van-tag>
         </template>
 
     </van-cell>
@@ -144,106 +110,7 @@ export default {
       detailInfo: {},
       factors: [],
       price: 0,
-      listData: [
-        {
-          list: [
-            {
-              code: "term_1",
-              text: "1年"
-            }
-          ],
-          title: "保险期间",
-          type: "select",
-          value: "term_1",
-          key: "insure"
-        },
-        {
-          list: [
-            {
-              code: "no",
-              text: "无"
-            },
-            {
-              code: "yes",
-              text: "有"
-            }
-          ],
-          title: "被保人有无吸烟习惯/吸烟史",
-          type: "select",
-          value: "no",
-          key: "smoke"
-        },
-        {
-          list: [
-            {
-              code: "no",
-              text: "无"
-            },
-            {
-              code: "yes",
-              text: "有"
-            }
-          ],
-          title: "被保人有无社保",
-          type: "select",
-          value: "no",
-          key: "medicare"
-        },
-        {
-          title: "保险责任（必选）",
-          type: "label",
-          value: "",
-          key: "yt_insurance_liability"
-        },
-        {
-          readonly: true,
-          title: "一般医疗",
-          type: "checkBox",
-          value: 1,
-          key: "yt_insurance_liability_one"
-        },
-        {
-          readonly: true,
-          title: "重大疾病医疗 ",
-          type: "checkBox",
-          value: 1,
-          key: "yt_insurance_liability_two"
-        },
-        {
-          readonly: true,
-          title: "恶性肿瘤质子重离子医疗",
-          type: "checkBox",
-          value: 1,
-          key: "yt_insurance_liability_three"
-        },
-        {
-          readonly: true,
-          title: "恶性肿瘤院外特定药品费用医疗",
-          type: "checkBox",
-          value: 1,
-          key: "yt_insurance_liability_four"
-        },
-        {
-          title: "附加责任（可选）",
-          type: "label",
-          value: "",
-          key: "yt_insurance_liability_optional"
-        },
-        {
-          readonly: false,
-          title: "重大疾病津贴保险金",
-          type: "checkBox",
-          value: 0,
-          key: "YT_INSURANCE_LIABILITY_OPTIONAL_CODE_ONE"
-        },
-        {
-          readonly: false,
-          title: "重大疾病住院津贴保险金",
-          type: "checkBox",
-          value: 0,
-          key: "YT_INSURANCE_LIABILITY_OPTIONAL_CODE_TWO"
-        }
-      ],
+
       premium: {
         applicants: [
           {
@@ -337,16 +204,38 @@ export default {
       const { productList, totalPremium } = res.data.value;
       this.factors = productList[0].factors;
       console.log(123, this.factors);
-      //   console.log("this.factors", productList, this.factors);
-      //   this.price = totalPremium;
-      //   let index = productList[0].factors.findIndex(v => {
-      //     return v.type === "label";
-      //   });
-      //   let arr = productList[0].factors.slice(0, index + 1);
-      //   for (let i = 0; i < arr.length; i++) {
-      //     this.$set(this.currentActivity, arr[i].key, arr[i].value);
-      //   }
-    }
+        console.log("this.factors", productList, this.factors);
+        this.price = totalPremium;
+        let index = productList[0].factors.findIndex(v => {
+          return v.type === "label";
+        });
+        let arr = productList[0].factors.slice(0, index + 1);
+        for (let i = 0; i < arr.length; i++) {
+          this.$set(this.currentActivity, arr[i].key, arr[i].value);
+        }
+    },
+    // 被保人抽烟  社保
+    changeCurrent(key, code) {
+      // vue中动态添加属性需要使用$set  负责点击高亮
+      this.$set(this.currentActivity, key, code)
+      // 判断数据是否存在
+      let index = this.premium.products[0].factors.findIndex(v => {
+        return v.key === key
+      })
+      if (index > -1) {
+        this.premium.products[0].factors.splice(index, 1, {
+          key,
+          value: code
+        })
+        this.getPremiun()
+      } else {
+        this.premium.products[0].factors.push({
+          key,
+          value: code
+        })
+        this.getPremiun()
+      }
+    },
   }
 };
 </script>
@@ -354,6 +243,10 @@ export default {
 <style scoped>
 .van-tag--large {
   padding: 5px 18px;
+
+}
+.van-tag--large:not(:last-child){
+  margin-right:6px;
 }
 /* color="#ffe1e1" text-color="#ad0000" */
 .active {
