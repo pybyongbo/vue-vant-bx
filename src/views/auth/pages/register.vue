@@ -2,25 +2,25 @@
     <div class="p-login-container">
         <div class="m-login-bg"></div>
         <van-cell-group>
-            <van-field 
+            <van-field
             v-model="username"
             label="姓名"
             placeholder="请输入您的姓名"
-            v-validate="'required|username'" 
-            name="username" 
-            data-vv-as="用户名" 
+            v-validate="'required|username'"
+            name="username"
+            data-vv-as="用户名"
             autocomplete="off"
             clearable
             label-align="right"
             label-width="78"
             />
-            <van-field v-model="phone" 
-            type="tel" 
-            label="手机号" 
-            placeholder="请输入手机号" 
-            v-validate="'required|mobile'" 
-            name="mobile" 
-            data-vv-as="手机号" 
+            <van-field v-model="phone"
+            type="tel"
+            label="手机号"
+            placeholder="请输入手机号"
+            v-validate="'required|mobile'"
+            name="mobile"
+            data-vv-as="手机号"
             clearable autocomplete="off"
             label-align="right"
                label-width="78"
@@ -40,27 +40,27 @@
             </template>
             </van-field>
 
-            <van-field 
+            <van-field
               v-model="password"
               label="登录密码"
               placeholder="请输入您的登录密码"
-              v-validate="'required|username'" 
-               name="password" 
+              v-validate="'required|username'"
+               name="password"
                type="password"
-               data-vv-as="登录密码" 
+               data-vv-as="登录密码"
                autocomplete="off"
                clearable
                label-align="right"
                label-width="82"
                />
-                <van-field 
-                v-model="inviteCode" 
+                <van-field
+                v-model="inviteCode"
                  label="邀请码"
                   placeholder="请输入邀请码"
-                   v-validate="'required|mobile'" 
-                   name="mobile" 
-                   data-vv-as="手机号" 
-                   clearable 
+                   v-validate="'required|mobile'"
+                   name="mobile"
+                   data-vv-as="手机号"
+                   clearable
                    autocomplete="off"
                    label-align="right"
                label-width="78"
@@ -73,14 +73,14 @@
                         data-vv-as="注册协议"
                         >
                         注册即同意
-                        <!-- <a @click="goToRegisterAgreement">《盈泰保险经纪平台注册协议》</a> -->
+                        <!-- <a @click="goToRegisterAgreement">《****vant-demo平台注册协议》</a> -->
                         <!--  -->
                         </van-checkbox>
-                        <router-link tag="a" to="/registAgreement">《盈泰保险经纪平台注册协议》</router-link>
+                        <router-link tag="a" to="/registAgreement">《****vant-demo平台注册协议》</router-link>
                     </p>
                 </div>
         </van-cell-group>
-        
+
 
         <div class="m-login-btn" @click="onLogin">注册</div>
 
@@ -96,7 +96,7 @@ export default {
     validator: "new" // give me a new validator each time.
   },
   components: {
- 
+
   },
   data() {
     return {
@@ -160,7 +160,7 @@ export default {
     text-align: center;
     background: #c21b17;
   }
-   
+
   .protocol{
       p{
           padding-left:20px;
@@ -168,7 +168,7 @@ export default {
             float:left;
           }
           span.van-checkbox__label{
-              
+
           }
           a{
               color: #c21b17;
