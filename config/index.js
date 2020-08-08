@@ -13,18 +13,19 @@ module.exports = {
     proxyTable: {
         '/api': {
             // target: 'http://172.28.162.217:7070',
-            target: 'http://ishare.yingtaibx.com',
+            target: 'https://ishare.yingtaibx.com/',
             changeOrigin: true,
             pathRewrite: {
                 // '^/api': ''
             }
         },
         '/calculation': {
-            target: `http://172.28.162.217:8085`,
+            //target: `http://172.28.162.217:8085`,
             // target: `https://yingtai-tst.zaouter.com`,
+            target:'https://ishare.yingtaibx.com/',
             changeOrigin: true,
             pathRewrite: {
-                '^/calculation': ''
+                // '^/calculation': ''
             }
         },
         //本地要启动happyadmin项目,登录.
