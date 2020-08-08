@@ -59,7 +59,11 @@
             </van-cell>
 
             <van-cell>
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> ca34c497c48ce5ede4e81d87696e2820541408e7
                 <template #title>
                     <span class="custom-title">被保人有无社保</span>
                 </template>
