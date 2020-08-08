@@ -52,13 +52,11 @@
         @confirm="getDate"
       />
     </van-popup>
-    <!-- <van-datetime-picker v-model="currentDate" type="date" title="选择年月日" :min-date="minDate" :max-date="maxDate" /> -->
 
     <van-cell
       v-for="item in factors"
       :key="item.key"
     >
-      <!-- {{JSON.stringify(item)}} -->
         <template #title>
           <span class="custom-title">{{item.title}}</span>
         </template>
