@@ -73,10 +73,10 @@
                         data-vv-as="注册协议"
                         >
                         注册即同意
-                        <!-- <a @click="goToRegisterAgreement">《****vant-demo平台注册协议》</a> -->
+                        <!-- <a @click="goToRegisterAgreement">《vant-demo平台注册协议》</a> -->
                         <!--  -->
                         </van-checkbox>
-                        <router-link tag="a" to="/registAgreement">《****vant-demo平台注册协议》</router-link>
+                        <router-link tag="a" to="/registAgreement">《vant-demo平台注册协议》</router-link>
                     </p>
                 </div>
         </van-cell-group>
