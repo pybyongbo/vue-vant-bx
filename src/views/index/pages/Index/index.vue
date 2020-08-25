@@ -1,77 +1,110 @@
 <template>
-    <div>
-        <div class="swiper-wrap demo-swipe">
-            <van-swipe :autoplay="3000" indicator-color="#1989fa">
-                <van-swipe-item v-for="(image, index) in bannerImg" :key="index">
-                    <img v-lazy="image.imgPath" />
-                </van-swipe-item>
-            </van-swipe>
-        </div>
-        <van-notice-bar color="#a46240" background="#fff3eb" left-icon="volume-o" scrollable text="注册成为盈泰会员,分享参加活动拿提成" mode="closeable"/>
-        <ul class="m-index-navbar">
-            <li v-for="(item, index) in insuranceTypes" :key="index" :class="`icon-0${index+1}`" @click.stop="onLinkToProductList(item)">{{ item.name }}</li>
-        </ul>
-
-        <!-- 首页特色分类 -->
-        <div v-for="(category, index) in indexCateList" v-if="category.list.length>0" :key="index" class="m-category-list" :class="[index==indexCateList.length-1?'last':'']">
-            <h2>
-                <span>{{ category.categoryName }}</span>
-                <span @click.stop="onLinkToCategory(category.id,category.categoryName)">更多</span>
-            </h2>
-            <van-grid :gutter="10" :column-num="2">
-                <van-grid-item v-for="(item, idx) in (category.list.length>4?category.list.slice(0, 4):category.list)" :key="idx" @click.stop="onLinkToDetail(item)">
-                    <!-- <template slot="icon">
-                        <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
-                    </template>
-                    <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
-                    -->
-
-                    <template slot="default">
-                        <lazy-component>
-                            <div class="pic">
-                                <img v-lazy='item.productListImg' style="width:100%;max-height:78px;" alt="图片">
-                            </div>
-                            <div class="con">
-                                <h3>{{ item.productName | subStrFilter(9) }}</h3>
-                                <div class="price">
-                                    <p>￥<strong>{{ item.minPremium }}</strong>元起
-                                    </p>
-                                    <!-- v-if="isPromotionFeeVisible && isShowPromotion" -->
-                                    <p class="profee">推广费 {{item.basePromotionRate }}%</p>
-                                </div>
-                            </div>
-                        </lazy-component>
-                    </template>
-                </van-grid-item>
-
-            </van-grid>
-        </div>
-
-        <!-- <loading title="正在加载..." :show="loading" /> -->
+  <div>
+    <div class="swiper-wrap demo-swipe">
+      <van-swipe :autoplay="3000" indicator-color="#1989fa">
+        <van-swipe-item v-for="(image, index) in bannerImg" :key="index">
+          <img v-lazy="image.imgPath" />
+        </van-swipe-item>
+      </van-swipe>
     </div>
+    <van-notice-bar color="#a46240" background="#fff3eb" left-icon="volume-o" scrollable text="注册成为盈泰会员,分享参加活动拿提成" mode="closeable" />
+    <ul class="m-index-navbar" v-if="insuranceTypes.length<=5">
+      <li v-for="(item, index) in insuranceTypes" :key="index" :class="`icon-0${index+1}`" @click.stop="onLinkToProductList(item)">{{ item.name }}</li>
+    </ul>
+
+    <div class="swiper1 m-swiper-box" v-else>
+      <swiper :options="swiperOption" ref="mySwiper1">
+        <!-- slides -->
+        <swiper-slide v-for="(item, index) of insuranceTypes" :key="item.id">
+          <span :class="`icon-0${index+1}`" @click="tonews(item.id)"></span>
+          <span @click="tonews(item.id)">{{item.name}}</span>
+        </swiper-slide>
+        <!-- Optional controls -->
+        <div slot="pagination" class="swiper-pagination"></div>
+      </swiper>
+    </div>
+
+    <!-- 首页特色分类 -->
+    <div v-for="(category, index) in indexCateList" v-if="category.list.length>0" :key="index" class="m-category-list" :class="[index==indexCateList.length-1?'last':'']">
+      <h2>
+        <span>{{ category.categoryName }}</span>
+        <span @click.stop="onLinkToCategory(category.id,category.categoryName)">更多</span>
+      </h2>
+      <van-grid :gutter="10" :column-num="2">
+        <van-grid-item v-for="(item, idx) in (category.list.length>4?category.list.slice(0, 4):category.list)" :key="idx" @click.stop="onLinkToDetail(item)">
+          <!-- <template slot="icon">
+                <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
+            </template>
+            <img class="new-icon" :src='item.productListImg' style="width:100%;max-height:72px;"/>
+          -->
+          <template slot="default">
+            <lazy-component>
+              <div class="pic">
+                <img v-lazy='item.productListImg' style="width:100%;max-height:78px;" alt="图片">
+              </div>
+              <div class="con">
+                <h3>{{ item.productName | subStrFilter(9) }}</h3>
+                <div class="price">
+                  <p>￥<strong>{{ item.minPremium }}</strong>元起
+                  </p>
+                  <!-- v-if="isPromotionFeeVisible && isShowPromotion" -->
+                  <p class="profee">推广费 {{item.basePromotionRate }}%</p>
+                </div>
+              </div>
+            </lazy-component>
+          </template>
+        </van-grid-item>
+
+      </van-grid>
+    </div>
+
+    <!-- <loading title="正在加载..." :show="loading" /> -->
+  </div>
 </template>
 
 <script>
 // import { Lazyload } from "vant";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import 'swiper/dist/css/swiper.css'
 import Loading from "@/components/loading/loading";
 import api from "@/api/index";
 import { toToast } from "@/utils/tools.js";
 import axiosInstance from "@/api/config";
 import { ROUTER_BASE } from "@/constants";
-
 export default {
   name: "indexPage",
   data() {
     return {
       bannerImg: [],
       insuranceTypes: [],
+      swiperOption: {
+        // swiper options 所有的配置同swiper官方api配置
+        autoplay: false,
+        loop: false, //设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
+        slideToClickedSlide: true, //设置为true则点击slide会过渡到这个slide。
+        slidesPerView: 5,
+        //centeredSlides: true, //设定为true时，active slide会居中，而不是默认状态下的居左。
+        slidesOffsetBefore: 0,
+        slidesOffsetAfter: 0,
+        freeMode: true,
+        grabCursor: true,
+        setWrapperSize: true,
+        autoHeight: true,
+        mousewheelControl: true,
+        observeParents: true,
+        pagination: {
+          el: ".swiper-pagination"
+        }
+      },
       indexCateList: [],
       loading: true,
       loadingPic: require("@/assets/image/common/loading.png")
     };
   },
   components: {
-    Loading
+    Loading,
+    swiper,
+    swiperSlide
   },
   created() {
     this.initData();
@@ -143,8 +176,8 @@ export default {
     onLinkToProductList(item) {
       this.$router.push({
         name: "productList",
-        query:{
-            insuranceType:item.code
+        query: {
+          insuranceType: item.code
         }
       });
     },
@@ -166,7 +199,7 @@ export default {
         });
         return false;
       }
-    //   const _id = tool.addId(item.companyCode, wxUrl, this.userId);
+      //   const _id = tool.addId(item.companyCode, wxUrl, this.userId);
       window.location.href =
         commodityType === 3
           ? wxUrl
@@ -301,7 +334,7 @@ export default {
 }
 .m-category-list {
   padding: 19px 0 10px 0;
-
+  clear: both;
   h2 {
     position: relative;
     height: 30px;
@@ -310,7 +343,7 @@ export default {
     font-size: 22px;
     font-weight: bolder;
     margin-bottom: 10px;
-    margin-top:0;
+    margin-top: 0;
     span:first-child {
       position: relative;
       height: 30px;
@@ -336,7 +369,7 @@ export default {
       float: right;
       display: block;
       height: 18px;
-      line-height:21px;
+      line-height: 21px;
       padding: 0 7px 2px 7px;
       margin-top: 4px;
       font-size: 12px;
@@ -398,6 +431,53 @@ export default {
 .last {
   padding-bottom: 60px;
 }
+.cateList {
+  overflow: hidden;
+  a {
+    float: left;
+    width: 100px;
+    height: 100px;
+  }
+}
+span.icon-01 {
+  background: url("~assets/image/index/icon-index-cate01.png") no-repeat scroll
+    center;
+  background-size: 48px;
+}
+span.icon-02 {
+  background: url("~assets/image/index/icon-index-cate02.png") no-repeat scroll
+    center;
+  background-size: 48px;
+}
+.icon-03 {
+  background: url("~assets/image/index/icon-index-cate03.png") no-repeat scroll
+    center;
+  background-size: 48px;
+}
+.icon-04 {
+  background: url("~assets/image/index/icon-index-cate04.png") no-repeat scroll
+    center;
+  background-size: 48px;
+}
+.icon-05 {
+  background: url("~assets/image/index/icon-index-cate05.png") no-repeat scroll
+    center;
+  background-size: 46px;
+}
+.icon-06 {
+  background: url("~assets/image/index/icon-index-cate03.png") no-repeat scroll
+    center;
+  background-size: 46px;
+}
+.swiper-container {
+  overflow: hidden;
+  
+  .swiper-pagination{
+    bottom:-5px;
+  }
+}
+
+
 </style>
 <style lang="scss">
 .swiper-wrap {
@@ -419,13 +499,43 @@ export default {
   height: 200px;
   max-height: 200px;
 }
-.van-notice-bar{
-    margin-bottom:10px;
+.van-notice-bar {
+  margin-bottom: 10px;
 }
-.van-notice-bar__content{
-  padding-top:1px;
-  height:40px;
+.van-notice-bar__content {
+  padding-top: 1px;
+  height: 40px;
   line-height: 40px;
   overflow: hidden;
+}
+.swiper1 {
+  height: 80px;
+  overflow: hidden;
+  .swiper-slide {
+    height: 80px;
+    font-size: 14px;
+    text-align: center;
+    float: left;
+    span {
+      // color: red;
+      display: block;
+      text-align: center;
+      width: 100%;
+      height: 50px;
+    }
+  }
+   .swiper-pagination-bullet {
+    width: 5px;
+    height: 5px;
+    background-color: #fff;
+    opacity: 0.5;
+    border-radius: 100%;
+  }
+  .swiper-pagination-bullet-active {
+    width: 10px;
+    background-color: #d3a243;
+    opacity: 1;
+    border-radius: 3px;
+  }
 }
 </style>

@@ -13,7 +13,8 @@ module.exports = {
     proxyTable: {
         '/api': {
             // target: 'http://172.28.162.217:7070',
-            target: 'https://ishare.yingtaibx.com/',
+            // target: 'https://ishare.yingtaibx.com/',
+            target:'https://yingtai-tst.zaouter.com/',
             changeOrigin: true,
             pathRewrite: {
                 // '^/api': ''
