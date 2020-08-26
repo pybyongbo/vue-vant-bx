@@ -11,13 +11,13 @@
     <ul class="m-index-navbar" v-if="insuranceTypes.length<=5">
       <li v-for="(item, index) in insuranceTypes" :key="index" :class="`icon-0${index+1}`" @click.stop="onLinkToProductList(item)">{{ item.name }}</li>
     </ul>
-
+    <!-- ICON特色分类,超过5个可以滚动,用的轮播效果,不超过5个显示固定 -->
     <div class="swiper1 m-swiper-box" v-else>
       <swiper :options="swiperOption" ref="mySwiper1">
         <!-- slides -->
         <swiper-slide v-for="(item, index) of insuranceTypes" :key="item.id">
-          <span :class="`icon-0${index+1}`" @click="tonews(item.id)"></span>
-          <span @click="tonews(item.id)">{{item.name}}</span>
+          <span :class="`icon-0${index+1}`" @click="onLinkToProductList(item)"></span>
+          <span class="text" @click="onLinkToProductList(item)">{{item.name}}</span>
         </swiper-slide>
         <!-- Optional controls -->
         <div slot="pagination" class="swiper-pagination"></div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- 首页特色分类 -->
-    <div v-for="(category, index) in indexCateList" v-if="category.list.length>0" :key="index" class="m-category-list" :class="[index==indexCateList.length-1?'last':'']">
+    <div v-for="(category, index) in indexCateListFilter" v-if="category.list.length>0" :key="index" class="m-category-list" :class="[index==indexCateListFilter.length-1?'last':'']">
       <h2>
         <span>{{ category.categoryName }}</span>
         <span @click.stop="onLinkToCategory(category.id,category.categoryName)">更多</span>
@@ -109,6 +109,14 @@ export default {
   created() {
     this.initData();
   },
+  computed:{
+      indexCateListFilter(){
+       return this.indexCateList.filter((item)=>{
+            return item.list.length>0
+        })
+      }
+
+  },
   mounted() {
     console.dir(axiosInstance);
     // var that = this;
@@ -153,6 +161,7 @@ export default {
 
       if (resultFlag) {
         this.insuranceTypes = resultContent;
+        //this.insuranceTypes = resultContent.slice(0,5);
       } else {
         toToast(resultMsg);
       }
@@ -449,22 +458,22 @@ span.icon-02 {
     center;
   background-size: 48px;
 }
-.icon-03 {
+span.icon-03 {
   background: url("~assets/image/index/icon-index-cate03.png") no-repeat scroll
     center;
   background-size: 48px;
 }
-.icon-04 {
+span.icon-04 {
   background: url("~assets/image/index/icon-index-cate04.png") no-repeat scroll
     center;
   background-size: 48px;
 }
-.icon-05 {
+span.icon-05 {
   background: url("~assets/image/index/icon-index-cate05.png") no-repeat scroll
     center;
   background-size: 46px;
 }
-.icon-06 {
+span.icon-06 {
   background: url("~assets/image/index/icon-index-cate03.png") no-repeat scroll
     center;
   background-size: 46px;
@@ -517,11 +526,14 @@ span.icon-02 {
     text-align: center;
     float: left;
     span {
-      // color: red;
       display: block;
       text-align: center;
       width: 100%;
       height: 50px;
+      &.text{
+        height:24px;
+        line-height:24px;
+      }
     }
   }
    .swiper-pagination-bullet {
