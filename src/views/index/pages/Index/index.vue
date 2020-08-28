@@ -154,19 +154,19 @@ export default {
     async getIconcate() {
       let res = await api.getIndexIcon({ terminal: 0 });
       const {
-        resultContent: { resultContent },
+        resultContent: { resultContent:resData },
         resultFlag,
         resultMsg
       } = res.data;
 
       if (resultFlag) {
-        this.insuranceTypes = resultContent;
+        this.insuranceTypes = resData;
         //this.insuranceTypes = resultContent.slice(0,5);
       } else {
         toToast(resultMsg);
       }
-
-      return resultContent;
+      // console.log('resData',resData);
+      return resData;
 
       //   .then(res => {
       //     const {
