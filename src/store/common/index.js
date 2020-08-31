@@ -1,4 +1,6 @@
-import user from './modules/user'
+import user from './modules/user';
+import fortune from './modules/fortune';
+
 // import system from './modules/system'
 // import vuxui from './modules/vuxui'
 // import popup from './modules/popup'
@@ -8,6 +10,7 @@ import user from './modules/user'
 
 export default {
   user,
+  fortune
 //   system,
 //   vuxui,
 //   popup,
